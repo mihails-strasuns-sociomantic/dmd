@@ -395,11 +395,11 @@ private int tryMain(size_t argc, const(char)** argv)
     {
         version (Windows)
         {
-            global.inifilename = findConfFile(global.params.argv0, "sc.ini");
+            global.inifilename = findConfFile(global.params.argv0, "sc-transitional.ini");
         }
         else static if (__linux__ || __APPLE__ || __FreeBSD__ || __OpenBSD__ || __sun)
         {
-            global.inifilename = findConfFile(global.params.argv0, "dmd.conf");
+            global.inifilename = findConfFile(global.params.argv0, "dmd-transitional.conf");
         }
         else
         {
