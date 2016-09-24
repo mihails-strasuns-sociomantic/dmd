@@ -5884,7 +5884,7 @@ void test11265()
 
 struct TimeOfDay
 {
-    void roll(int value) 
+    void roll(int value)
     {
         value %= 60;
         auto newVal = _seconds + value;
@@ -6007,6 +6007,44 @@ void test14510()
 {
     Vector14510 vec;
     fun14510(vec);
+}
+
+/***************************************************/
+// https://issues.dlang.org/show_bug.cgi?id=16027
+
+void test16027()
+{
+    double value = 1.0;
+    value *= -1.0;
+    assert(value == -1.0);    // fails, value is +1.0
+
+    value = 1.0;
+    value = value * -1.0;
+    assert(value == -1.0);
+}
+
+/***************************************************/
+// https://issues.dlang.org/show_bug.cgi?id=16530
+
+double entropy2(double[] probs)
+{
+    double result = 0;
+    foreach (p; probs)
+    {
+        __gshared int x;
+        ++x;
+        if (!p) continue;
+        import std.math : log2;
+        result -= p * log2(p);
+    }
+    return result;
+}
+
+void test16530()
+{
+    import std.stdio;
+    if (entropy2([1.0, 0, 0]) != 0.0)
+       assert(0);
 }
 
 /***************************************************/
@@ -6305,6 +6343,8 @@ int main()
     test12138();
     test14430();
     test14510();
+    test16027();
+    test16530();
 
     writefln("Success");
     return 0;
